@@ -1,0 +1,392 @@
+package com.example.currencydetector;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
+import android.telephony.SmsManager;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+
+import com.pedromassango.doubleclick.DoubleClick;
+import com.pedromassango.doubleclick.DoubleClickListener;
+
+import com.example.currencydetector.Utility.Configurations.BitmapConfiguration;
+import com.example.currencydetector.Utility.Configurations.CameraConfiguration;
+import com.example.currencydetector.Utility.Gestures;
+import com.example.currencydetector.Utility.Helper.IntroductionMessageHelper;
+import com.example.currencydetector.Utility.Helper.TabsSwipeHelper;
+import com.example.currencydetector.Utility.Helper.ThreadHelper;
+import com.example.currencydetector.Utility.UI_Connection;
+import com.example.currencydetector.Utility.Voice;
+import com.github.pwittchen.swipe.library.rx2.Swipe;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
+import java.util.Locale;
+
+import io.fotoapparat.view.CameraView;
+import io.fotoapparat.view.FocusView;
+
+/*
+* TODO :
+
+   ** settings --> toggle buttons , up-down volume buttons , flash , English language support
+
+food detection -->
+open with Google assistance
+introduction message  finished
+orientation --> ml kit simi finished
+
+refactoring
+hide notification bar --> activity helper class finished
+
+
+
+future work -->
+age and gender detection
+
+* */
+public class MainActivity extends AppCompatActivity {
+
+    private final int CameraCode = 1;
+    BitmapConfiguration bitmapConfiguration;
+
+    //layout
+    LinearLayout linearLayout;
+    //threads
+    ThreadHelper threadHelper;
+    TabsSwipeHelper tabsSwipeHelper;
+    IntroductionMessageHelper introductionMessageHelper;
+
+    private FocusView focusView;
+    private boolean hasCameraPermission = false;
+    private CameraView cameraView;
+    private CameraConfiguration cameraConfigurations;
+    //SWIP
+    private static final int REQUEST_CODE_SPEECH_INPUT = 1000;
+    TextToSpeech t1;
+    private Swipe swipe;
+    private Gestures gestures;
+    int a=0;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Voice.init(this);
+        Voice.initToggle(this);
+
+        t1=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    t1.setLanguage(Locale.UK);
+                }
+            }
+        });
+        t1.speak("Long press the screen to check the balance", TextToSpeech.QUEUE_FLUSH, null);
+
+        importViews();
+        cameraConfigurations = new CameraConfiguration(cameraView, this, focusView);
+        if (hasCameraPermission)
+            cameraConfigurations.startCamera();
+        bitmapConfiguration = new BitmapConfiguration();
+
+
+        threadHelper = new ThreadHelper(this, bitmapConfiguration, cameraConfigurations, getApplication());
+//        introductionMessageHelper = new IntroductionMessageHelper(this, this);
+        Gestures.swipesNumber = Voice.Language.equals("ar") ? 3 : 5;
+        swipeConfiguration();
+        tabsSwipeHelper = new TabsSwipeHelper(gestures, threadHelper);
+
+
+        ActivityHelper.hideNotificationBar(this);
+
+        UI_Connection.fillMap();
+        if (hasCameraPermission)
+            introductionMessageHelper.introductionMessage(hasCameraPermission);
+        mainScreen();
+
+
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        swipe.dispatchTouchEvent(event);
+        return super.dispatchTouchEvent(event);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (hasCameraPermission) {
+            cameraConfigurations.startCamera();
+
+        } else {
+            cameraConfigurations.requestCameraPermission(this);
+        }
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (hasCameraPermission) {
+
+            cameraConfigurations.KillCamera();
+        }
+        Voice.release();
+        threadHelper.killAllThreadsAndReleaseVoice();
+
+
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == CameraCode) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                hasCameraPermission = true;
+//                introductionMessageHelper.introductionMessage(hasCameraPermission);
+                cameraConfigurations.startCamera();
+
+
+            } else {
+
+                hasCameraPermission = false;
+
+
+                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void mainScreen() {
+        final Activity activity = this;
+        linearLayout.setOnClickListener(new DoubleClick(new DoubleClickListener() {
+
+            @Override
+            public void onSingleClick(View view) {
+                if (hasCameraPermission)
+                    tabsSwipeHelper.tabs(activity);
+            }
+
+            @Override
+            public void onDoubleClick(View view) {
+                if (hasCameraPermission) {
+                    threadHelper.flashToggleThread();
+
+                }
+            }
+        }));
+
+        linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (hasCameraPermission) {
+//                    Log.d("lang1" , Voice.Language);
+//                    Voice.Language = Voice.Language.equals("ar") ? "en" : "ar";
+//                    Log.d("lang1" , Voice.Language);
+//                    Voice.toggleLang(MainActivity.this);
+//
+//
+//                    boolean t = introductionMessageHelper.introductionMessage(hasCameraPermission);
+//                    if (t) {
+//                        threadHelper.languageToggleThread();
+//                    }
+//
+//                    Gestures.swipesNumber = Voice.Language.equals("ar") ? 3 : 5;
+                    if(a==0) {
+                        a = 10;
+                        databasequeries dd = new databasequeries(MainActivity.this);
+                        String curr = dd.getBal();
+                        t1.speak("Balance amount, "+curr+" rupees. Do you need to add the balance or deduct the balance? Say nothing to cancel, Say balance to know the balance amount, Say add along with the amount to add the balance, Say deduct along with the amount to deduct the amount.", TextToSpeech.QUEUE_FLUSH, null);
+                        Handler handler = new Handler();
+
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+                                speak();
+                            }
+                        }, 14000);
+                    }
+                    else{
+                        speak();
+                    }
+
+                }
+
+                return true;
+            }
+        });
+    }
+
+    private void speak() {
+        // Intent to show speech to text dialogs
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL ,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Listening...");
+
+        // Start Intent
+        try{
+            // If there was no error
+            // showing dialogs
+            startActivityForResult(intent,REQUEST_CODE_SPEECH_INPUT);
+        }
+        catch (Exception e){
+            // If there was some error
+
+            // get Message of error and show
+            Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode){
+            case REQUEST_CODE_SPEECH_INPUT:{
+                if(requestCode != RESULT_OK && null != data){
+                    // get the text array from voice intent
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+
+                    // set the voice view
+                    String em = result.get(0);
+                    em = em.toLowerCase();
+
+
+                    if(em.startsWith("nothing")){
+                        t1.speak("Cancelled", TextToSpeech.QUEUE_FLUSH, null);
+                    }
+                    else if(em.startsWith("save")){
+                        t1.speak("Tell the user mobile number with user name", TextToSpeech.QUEUE_FLUSH, null);
+                    }
+                    else if(em.startsWith("send")){
+                        String phn = "";
+                        String usr = "";
+                        String[] u = em.split(" ");
+                        usr = u[u.length-1];
+                        databasequeries db = new databasequeries(MainActivity.this);
+                        phn = db.getPhone(usr);
+                        SmsManager smsManager = SmsManager.getDefault();
+                        smsManager.sendTextMessage(phn, null, "Hello", null, null);
+
+                        t1.speak("Sending message to "+usr, TextToSpeech.QUEUE_FLUSH, null);
+                    }
+                    else if(em.startsWith("call")){
+                        String phn = "";
+                        String usr = "";
+                        String[] u = em.split(" ");
+                        usr = u[u.length-1];
+                        databasequeries db = new databasequeries(MainActivity.this);
+                        phn = db.getPhone(usr);
+                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        callIntent.setData(Uri.parse("tel:"+phn));
+                        startActivity(callIntent);
+                        t1.speak("Calling the user "+usr, TextToSpeech.QUEUE_FLUSH, null);
+                    }
+                    else if(em.startsWith("user")){
+                        String[] s = em.split(" ");
+                        databasequeries db = new databasequeries(MainActivity.this);
+                        db.addUsers(s[s.length-2], s[s.length-1]);
+                        t1.speak("Saved", TextToSpeech.QUEUE_FLUSH, null);
+                    }
+                    else if(em.startsWith("add")){
+
+                        em = em.replace("add","");
+                        em = em.replace("rupees", "");
+                        em = em.replace(" ", "");
+                        Log.e("Added rupees: ",em);
+                        databasequeries dd = new databasequeries(MainActivity.this);
+                        String curr = dd.getBal();
+                        try{
+                            int b = Integer.parseInt(curr) + Integer.parseInt(em);
+                            Log.e("To update rupees: ",b+"");
+                            dd.updateBal(b+"");
+                        }
+                        catch (Exception ex){
+                            Log.e("Error: ", ex+"");
+                        }
+                        String cur = dd.getBal();
+                        Toast.makeText(getApplicationContext(),"Balance Updated "+cur, Toast.LENGTH_LONG).show();
+                    }
+                    else if(em.startsWith("deduct")){
+                        em = em.replace("deduct","");
+                        em = em.replace("rupees", "");
+                        em = em.replace(" ", "");
+                        databasequeries dd = new databasequeries(MainActivity.this);
+                        String curr = dd.getBal();
+                        try{
+                            int b = Integer.parseInt(curr) - Integer.parseInt(em);
+                            if(b<0){
+                                t1.speak("Cannot deduct the amount. No Sufficient amount.", TextToSpeech.QUEUE_FLUSH, null);
+                            }
+                            else {
+                                dd.updateBal(b + "" );
+                            }
+                        }
+                        catch (Exception ex){
+                            Log.e("Error: ", ex+"");
+                        }
+                        String cur = dd.getBal();
+                        Toast.makeText(getApplicationContext(),"Balance Updated "+cur, Toast.LENGTH_LONG).show();
+                    }
+                    else if(em.startsWith("balance")){
+                        databasequeries dd = new databasequeries(MainActivity.this);
+                        String curr = dd.getBal();
+                        t1.speak("Balance Amount: "+curr+ " rupees.", TextToSpeech.QUEUE_FLUSH, null);
+
+                        Toast.makeText(getApplicationContext(),"Balance  "+curr, Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        t1.speak("Command not understood", TextToSpeech.QUEUE_FLUSH, null);
+                    }
+
+                }
+                break;
+            }
+        }
+    }
+
+    private void swipeConfiguration() {
+        swipe = new Swipe();
+        gestures = new Gestures();
+        swipe.setListener(gestures);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (hasCameraPermission) {
+
+            cameraConfigurations.KillCamera();
+        }
+        Voice.release();
+        threadHelper.killAllThreadsAndReleaseVoice();
+
+    }
+
+    private void importViews() {
+        cameraView = findViewById(R.id.cameraView);
+        linearLayout = findViewById(R.id.linearLayout);
+        focusView = findViewById(R.id.focusView);
+    }
+
+
+}

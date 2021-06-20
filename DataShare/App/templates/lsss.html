@@ -1,0 +1,426 @@
+{% load staticfiles %}
+<!doctype html>
+<html class="no-js" lang="">
+	
+<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>TAFC</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="manifest" href="site.html">
+		<!-- Place favicon.ico -->
+		<link rel="apple-touch-icon" href="{% static 'assets/img/datashare.png' %}">
+		<link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/img/icon.png' %}">
+		<!-- google fonts -->
+		<link href="https://fonts.googleapis.com/css?family=Nunito:400,700" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+		<!-- Stylesheet -->
+		<!-- normalize style -->
+		<link rel="stylesheet" href="{% static 'assets/css/normalize.css' %}">
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+		<!-- owl carousel -->
+		<link rel="stylesheet" href="{% static 'assets/css/owl.carousel.min.css' %}">
+		<!-- fontawesome -->
+		<link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+		<!-- animate css -->
+		<link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}">
+		<!-- type animation css -->
+		<link rel="stylesheet" href="{% static 'assets/css/typing-css.css' %}">
+		<!-- custom style -->
+		<link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+		<!-- main style -->
+		<link rel="stylesheet" href="{% static 'style.css' %}">
+		<!-- responsive css -->
+		<link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+	</head>
+	
+	<style>
+	td,th{
+	padding:10px;
+	}
+	.check1{
+    width:20px;
+
+    position:relative;
+    left: 200px; 
+
+    vertical-align:middle; 
+}
+
+.check2{
+    width:20px;
+
+    position:relative;
+    left: 200px; 
+
+    vertical-align:middle; 
+}
+
+.label1{  
+    width:200px;       
+
+    position:relative;
+    left: -20px;
+
+    display:inline-block;    
+    vertical-align:middle; 
+}
+#tab1{
+float:left;
+}
+#t1{
+float:right;
+}
+#pubtab{
+float:left;
+}
+	</style>
+<script src="{% static  'jquery-2.1.4.min.js' %}"></script>
+<script>
+$(document).ready(function(){
+	
+	var arr=[];
+	var arr1=[];
+	var s="";
+	var wx="";
+	var ax="";
+	var or1=0;
+	var and1=0
+		var w=0;	
+		$(document).on('change','#sel',function(){
+			x=$('#sel').val();
+			$.ajax({url:"/selected/",
+            contentType: "application/json; charset=utf-8",
+            data:{"d1":x},
+            datatype:"json",
+            success:function(da){
+				$('#desig').append('<option>SELECT</option>')
+				for(var i=0;i<da.dt1.length;i++){
+				$('#desig').append('<option>'+da.dt1[i].fields["drole"]+'</option>')
+			}
+			}
+			});
+			});
+			$(document).on('change','.check1',function(){
+				if($(this).is(':checked'))
+				{	
+					
+					var x=$(this).val();
+					arr.push(x);
+					arr1.push(x);
+					$.ajax({url:"/newrole/",
+					contentType: "application/json; charset=utf-8",
+					data:{"d1":x},
+					datatype:"json",
+					success:function(da){
+					$('#tab1').empty()
+					$('#tab1').append('<tr><th>'+da.dt1[0].fields["department"]+'</th></tr>')
+						for(var i=0;i<da.dt1.length;i++){
+							$('#tab1').append('<tr><td><input class="check2" type="checkbox" id="check_id" name="depart" value="'+da.dt1[i].fields["drole"]+'"> <label class="label1">'+da.dt1[i].fields["drole"]+'</label></td></tr>')
+							
+						}
+						$('#tab1').append('<tr><td style="align:right;"><button id="b1and">AND</button></td><td><button id="b1or">OR</button></td><td><button id="sets">SET POLICY</button></td></tr>')
+						
+					}
+					});
+				}		
+			});
+			$(document).on('click','#sets',function(){
+			//qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+			if(or1==1){
+				ax=ax+"(";
+				for(i=0;i<arr1.length;i++)
+				{	ax=ax+arr1[i]+",";
+				}
+				ax=ax+"-1)"
+				}
+			if(and1==1){
+				ax=ax+"(";
+				for(i=0;i<arr1.length;i++)
+				{	ax=ax+arr1[i]+",";
+				}
+				ax=ax+"1)"
+				}
+				alert(ax);
+			$('#t1').append('<tr><td>DATE:</td><td><input id="dat" type="date" name="opendate"></td></tr>')
+			$('#t1').append('<tr><td>TIME:</td><td><input type="time" id="tim" name="opentime"></td></tr>')
+			$('#t1').append('<tr><td><input type="button" value="SUBMIT" id="sub"></td></tr>')
+					
+			});
+			
+			$(document).on('change','#fil',function(){
+				cv=$('#fil').val();
+			});
+			
+			$(document).on('click','#sub',function(){
+				c=$('#dat').val();
+				z=$('#tim').val();
+				$.ajax({url:"/boolean/",
+					contentType: "application/json; charset=utf-8",
+					data:{"d1":s,"d2":c,"d3":z,"d4":arr1,"d5":c,"d6":z},
+					datatype:"json",
+					success:function(da){
+						alert(da);
+						$('#td1').append('<label style="color:red">Look down To upload Text File</label>')
+						}
+					});
+			});
+			
+			$(document).on('click','.check2',function(){
+			if($(this).is(':checked'))
+				{
+				
+				arr.push($(this).val());
+				arr1.push($(this).val());
+				or1=0;
+				and1=0;
+				}
+			});
+			
+			$(document).on('click','#b1and',function(){
+			$('.check1').prop('checked', false);
+				$('.check2').prop('checked', false);
+				for (i=0;i<arr.length;i++)
+				{
+					if (i==0 && w==0){
+						s=s+"(";
+						s=s+arr[i]+", ";
+						wx=wx+"( "+arr1[i];
+					}
+					else if (i==0 && w>0){
+						s=s+"(";
+						s=s+", "+arr[i];
+						wx=wx+" ("+arr1[i];
+					}
+					else if(i==arr.length-1){
+						s=s+arr[i]+", ";
+					}
+					else{
+					s=s+arr[i]+", ";
+					wx+=arr1[i];
+					}
+					}
+					s=s+"1);";
+					arr=[];
+					and1=1;
+					w=w+1;
+			});
+			$(document).on('click','#b1or',function(){
+			$('.check1').prop('checked', false);
+				$('.check2').prop('checked', false);
+				for (i=0;i<arr.length;i++)
+				{
+					if (i==0 && w==0){
+						s=s+"(";
+						s=s+arr[i]+", ";
+					}
+					else if (i==0 && w>0){
+						
+						s=s+", ("+arr[i];
+					}
+					else if(i==arr.length-1){
+						s=s+arr[i]+", ";
+					}
+					else{
+					s=s+arr[i]+", ";
+					}
+					}
+					s=s+",-1);";
+					arr=[];
+					or1=1;
+					w=w+1;
+			});
+
+	$(document).on('change','#desig',function(){
+			x=$('#desig').val();
+			$.ajax({url:"/empire/",
+            contentType: "application/json; charset=utf-8",
+            data:{"d1":x},
+            datatype:"json",
+            success:function(da){
+			$('#sel').append('<option>SELECT</option>')
+			$('#pubtab').append('<tr><th>PUBLIC KEY</th><th>MASTER KEY</th><th>DEPARTMENT</th><th>DESIGNATION</th><th>EXPIRY DATE</th><th>EXPIRY TIME</th></tr>')
+			//for(var i=0;i<da.dt2.length;i++){
+			var t=da.dt2.length-1
+			for (j=0;j<da.dt3.length;j++)
+				{
+					var dsa=da.dt3;
+				}
+			for (j=0;j<da.dt3.length;j++)
+				{
+					var dtime=da.dt4;
+				}
+			//}
+			for(var i=0;i<da.dt1.length;i++){
+				$('#pubtab').append('<tr><td><input type="text" width="30px" class="tex" disabled value="'+da.dt2[t].fields["pkv"]+'"></td><td><input  width="30px" type="text" class="tex" disabled value="'+da.dt2[t].fields["msk"]+'"></td><td><input type="text" width="30px" class="tex" disabled value="'+da.dt1[i].fields["dep"]+'"></td><td><input type="text" width="30px" class="tex" disabled value="'+da.dt1[i].fields["role"]+'"></td><td><input  width="30px" type="text" class="tex" disabled value="'+dsa+'"></td><td><input  width="30px" type="text" class="tex" disabled value="'+dtime+'"></td></tr>')
+			}
+			
+			}
+			
+			});
+		});
+		
+});	
+</script>
+	<body>
+		
+		<div class="spinner-section">
+			<div class="loader preloader"></div>
+		</div>
+		<header class="main-header offset-header">
+			<!-- header top -->
+			<div class="header-top whitecolor">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 col-lg-8">
+							<ul class="header-top-list">
+							</ul>
+						</div>
+						<div class="col-12 col-lg-4 text-right">
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- header bottom -->
+			<div class="header-bottom">
+				<div class="container">
+					<div class="row">
+						<!-- navbar -->
+						<nav class="navbar navbar-expand-lg w-100">
+							<!-- brand / logo -->
+							<a class="navbar-brand" href="#">
+								<img src="{% static 'assets/img/datashare.png' %}" alt="Wroot">
+							</a>
+							<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+							</button>
+							<!-- nav menu -->
+							<div id="navbarNavDropdown" class="navbar-collapse collapse justify-content-end mainmenu">
+								<ul class="navbar-nav">
+									<li class="nav-item">
+										<a class="nav-link" href="index.html">Home </a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{% url 'data' %}">Send Message<span class="sr-only">(current)</span></a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{% url 'cloudpage' %}">Cloud Services</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{% url 'log' %}">LogOut</a>
+									</li>
+									
+									
+									
+									
+								</ul>
+							</div>
+							
+							<!-- menu search -->
+							
+						</nav>
+						<!-- // end navbar -->
+					</div>
+				</div>
+			</div>
+		</header>
+		<!-- // end header -->
+		<!-- banner section -->
+		<section class="banner-section">
+			<div class="container">
+				<div class="row">
+					<div class="col-12 banner-content whitecolor">
+						<div class="banner-text">
+							<div class="flat-content">
+								<form action="{% url 'read_file' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+								<table>
+								<tr>
+									<td><input id="upload" type="file" name="files2"></td>
+									</tr>
+									<tr><td><input type="submit" value="SUBMIT"></td><td><table>
+									<td><textarea id="filename"></textarea></td></tr>
+									</table></td></tr>
+								</table>
+								</form>
+								
+								
+								<table id="pubtab">
+								<tr><th>DEPARTMENT NAME</th></tr>
+									<tr><td><input class="check1" type="checkbox" id="check_id" name="depart" value="IT"> <label class="label1">IT</label></td>
+									<td><input class="check1" type="checkbox" name="depart" value="Maintenance"> <label class="label1">Maintenance</label></td>
+									<td><input class="check1" type="checkbox" name="depart" value="Finance"> <label class="label1">Finance</label></td>
+									<td><input class="check1" type="checkbox" name="depart" value="Sales"> <label class="label1">Sales</label></td></tr></tr>
+								
+								</table>
+								<table id="tab1">
+								</table>
+								<table id="t1">
+								<tr><td id="td1"></td></tr>
+								</table>
+								
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- // end banner section -->
+		<!-- about section -->
+						<!-- single footer content -->
+						<div class="col-12 col-lg-3 col-md-6">
+							<div class="single-footer-text">
+							
+								<div class="footer-subscribe">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- footer copyright -->
+			<div class="footer-copyright whitecolor">
+				<div class="container">
+					<div class="row">
+						<div class="w-100 d-md-flex d-block justify-content-between">
+							<p>Copyright &copy; 2018 <a href="#">TAFC</a> All Rights Reserved</p>
+							<p>Build With <i class="fas fa-heart"></i> By <a href="https://crazyenter.com/" target="_blank">crazyEnter</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<!-- // end footer section -->
+		<!-- // end body -->
+		<!-- Scripts -->
+		<!-- modernizar script -->
+		<script src="{% static 'assets/js/vendor/modernizr-3.6.0.min.js' %}"></script>
+		<!-- jquery -->
+		<script src="{% static 'assets/js/vendor/jquery-3.3.1.min.js' %}"></script>
+		<!-- Bootstrap Core -->
+		<script src="{% static 'assets/js/popper.min.js' %}"></script>
+		<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+		<!-- owl carousel -->
+		<script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+		<!-- whypoints -->
+		<script src="{% static 'assets/js/jquery.waypoints.min.js' %}"></script>
+		<!-- type animation -->
+		<script src="{% static 'assets/js/type-animation.js' %}"></script>
+		<!-- circle progress -->
+		<script src="{% static 'assets/js/circle-progress.min.js' %}"></script>
+		<!-- masonary -->
+		<script src="{% static 'assets/js/masonary.min.js' %}"></script>
+		<!-- isotope -->
+		<script src="{% static 'assets/js/isotope.pkgd.min.js' %}"></script>
+		<!-- imagesLoaded -->
+		<script src="{% static 'assets/js/imagesloaded.pkgd.min.js' %}"></script>
+		<!-- wow js -->
+		<script src="{% static 'assets/js/wow.min.js' %}"></script>
+		<!-- main script -->
+		<script src="{% static 'assets/js/main.js' %}"></script>
+	</body>
+
+<!-- Mirrored from themes.crazyenter.com/static/wroot/templates/multi-page/simple/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 17 Jan 2019 07:11:48 GMT -->
+</html>

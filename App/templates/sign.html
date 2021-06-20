@@ -1,0 +1,200 @@
+{% load staticfiles %}
+<!doctype html>
+<html class="no-js" lang="">
+	
+<!-- Mirrored from themes.crazyenter.com/static/wroot/templates/multi-page/simple/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 17 Jan 2019 07:09:20 GMT -->
+<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>SignIn Page</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="manifest" href="site.html">
+		<!-- Place favicon.ico -->
+		<link rel="apple-touch-icon" href="{% static 'assets/img/datashare.png' %}">
+		<link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/img/icon.png' %}">
+		<!-- google fonts -->
+		<link href="https://fonts.googleapis.com/css?family=Nunito:400,700" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+		<!-- Stylesheet -->
+		<!-- normalize style -->
+		<link rel="stylesheet" href="{% static 'assets/css/normalize.css' %}">
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+		<!-- owl carousel -->
+		<link rel="stylesheet" href="{% static 'assets/css/owl.carousel.min.css' %}">
+		<!-- fontawesome -->
+		<link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+		<!-- animate css -->
+		<link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}">
+		<!-- type animation css -->
+		<link rel="stylesheet" href="{% static 'assets/css/typing-css.css' %}">
+		<!-- custom style -->
+		<link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+		<!-- main style -->
+		<link rel="stylesheet" href="{% static 'style.css' %}">
+		<!-- responsive css -->
+		<link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+	<style>
+	td{
+	padding:20px;
+	}
+	</style>
+	</head>
+	<body>
+		<!--[if lte IE 9]>
+		<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+		<![endif]-->
+		<!-- start body -->
+		<!-- preloader -->
+		<div class="spinner-section">
+			<div class="loader preloader"></div>
+		</div>
+		<!-- // end preloader -->
+		<!-- header -->
+		<header class="main-header offset-header">
+			<!-- header top -->
+			<div class="header-top whitecolor">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 col-lg-8">
+							<ul class="header-top-list">
+							</ul>
+						</div>
+						<div class="col-12 col-lg-4 text-right">
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- header bottom -->
+			<div class="header-bottom">
+				<div class="container">
+					<div class="row">
+						<!-- navbar -->
+						<nav class="navbar navbar-expand-lg w-100">
+							<!-- brand / logo -->
+							<a class="navbar-brand" href="#">
+								<img src="{% static 'assets/img/datashare.png' %}" alt="Wroot">
+							</a><label style="color:white;">Sign Up</label>
+							<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+							</button>
+							<!-- nav menu -->
+							
+							<!-- menu search -->
+							
+						</nav>
+						<!-- // end navbar -->
+					</div>
+				</div>
+			</div>
+		</header>
+		<!-- // end header -->
+		<!-- banner section -->
+		<section class="banner-section">
+			<div class="container">
+				<div class="row">
+					<div class="col-12 banner-content whitecolor">
+						<div class="banner-text">
+							<div class="flat-content">
+								
+								
+								
+								<div class="banner-button">
+									<!--<a href="#" class="main-btn">Sign In</a>
+									<a href="#" class="main-btn white-btn">Sign Up</a>-->
+									<form action="{% url 'loginval' %}" method="POST">{% csrf_token %}
+									<center>
+									<table>
+									<tr>
+										<td>USERNAME</td><td><input type="text" name="usernamelog"></td></tr>
+									
+										<tr>
+										<td>PASSWORD</td><td><input type="password" name="passwordlog"></td></tr>
+										<tr><td></td><td><input type="submit" value="LogIn"></td>
+									</table>	
+									</center>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- // end banner section -->
+		<!-- about section -->
+		<section class="about-section equal-space">
+			<!-- background dot -->
+			<div class="dot-bg"></div>
+			<div class="container">
+				<div class="row">
+					<div class="col-12 col-lg-5 mb-5 mb-lg-0">
+						<div class="about-txt">
+							<h2>About<span> Wroot</span></h2>
+							<h4>We’re a team of curious people that share a passion for creating digital experiences.</h4>
+							<p>Terbh epsuc nolor lit amet, consectetur adipisicing elit. Enim dolores temporibus iste dolorem nesciunt voluptatibus possimus totam esse, odit cum iure nihil fugit aspernatur porro. Terbh epsuc nolor lit amet, consectetur.</p>
+							<p>Coreh Epsum volor sit amet, consectetur adipisicing elit. Quia, impedit! Illum quis magni, cupiditate id?</p>
+							<a href="#" class="main-btn">More About Us</a>
+						</div>
+					</div>
+					<div class="col-12 col-lg-7">
+						<div class="about-slider owl-carousel">
+							<img src="{% static 'assets/img/about/about-1.jpg' %}" alt="about">
+							<img src="{% static 'assets/img/about/about-2.jpg' %}" alt="about">
+							<img src="{% static 'assets/img/about/about-3.jpg' %}" alt="about">
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- footer section -->
+		<footer class="footer-section black-bg">
+			<!-- footer top -->
+			<div class="footer-copyright whitecolor">
+				<div class="container">
+					<div class="row">
+						<div class="w-100 d-md-flex d-block justify-content-between">
+							<p>Copyright &copy; 2018 <a href="#">Wroot</a> All Rights Reserved</p>
+							<p>Build With <i class="fas fa-heart"></i> By <a href="https://crazyenter.com/" target="_blank">crazyEnter</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<!-- // end footer section -->
+		<!-- // end body -->
+		<!-- Scripts -->
+		<!-- modernizar script -->
+		<script src="{% static 'assets/js/vendor/modernizr-3.6.0.min.js' %}"></script>
+		<!-- jquery -->
+		<script src="{% static 'assets/js/vendor/jquery-3.3.1.min.js' %}"></script>
+		<!-- Bootstrap Core -->
+		<script src="{% static 'assets/js/popper.min.js' %}"></script>
+		<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+		<!-- owl carousel -->
+		<script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+		<!-- whypoints -->
+		<script src="{% static 'assets/js/jquery.waypoints.min.js' %}"></script>
+		<!-- type animation -->
+		<script src="{% static 'assets/js/type-animation.js' %}"></script>
+		<!-- circle progress -->
+		<script src="{% static 'assets/js/circle-progress.min.js' %}"></script>
+		<!-- masonary -->
+		<script src="{% static 'assets/js/masonary.min.js' %}"></script>
+		<!-- isotope -->
+		<script src="{% static 'assets/js/isotope.pkgd.min.js' %}"></script>
+		<!-- imagesLoaded -->
+		<script src="{% static 'assets/js/imagesloaded.pkgd.min.js' %}"></script>
+		<!-- wow js -->
+		<script src="{% static 'assets/js/wow.min.js' %}"></script>
+		<!-- main script -->
+		<script src="{% static 'assets/js/main.js' %}"></script>
+	</body>
+	<script src="{% static  'jquery-2.1.4.min.js' %}"></script>
+	<script>
+	alert("USER NOT FOUND");
+	</script>
+
+<!-- Mirrored from themes.crazyenter.com/static/wroot/templates/multi-page/simple/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 17 Jan 2019 07:11:48 GMT -->
+</html>

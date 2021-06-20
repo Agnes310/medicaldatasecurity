@@ -1,0 +1,251 @@
+{% load staticfiles %}
+<!doctype html>
+<html class="no-js" lang="">
+	
+<!-- Mirrored from themes.crazyenter.com/static/wroot/templates/multi-page/simple/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 17 Jan 2019 07:09:20 GMT -->
+<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>TAFC</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="manifest" href="site.html">
+		<!-- Place favicon.ico -->
+		<link rel="apple-touch-icon" href="{% static 'assets/img/datashare.png' %}">
+		<link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/img/icon.png' %}">
+		<!-- google fonts -->
+		<link href="https://fonts.googleapis.com/css?family=Nunito:400,700" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+		<!-- Stylesheet -->
+		<!-- normalize style -->
+		<link rel="stylesheet" href="{% static 'assets/css/normalize.css' %}">
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+		<!-- owl carousel -->
+		<link rel="stylesheet" href="{% static 'assets/css/owl.carousel.min.css' %}">
+		<!-- fontawesome -->
+		<link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+		<!-- animate css -->
+		<link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}">
+		<!-- type animation css -->
+		<link rel="stylesheet" href="{% static 'assets/css/typing-css.css' %}">
+		<!-- custom style -->
+		<link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+		<!-- main style -->
+		<link rel="stylesheet" href="{% static 'style.css' %}">
+		<!-- responsive css -->
+		<link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+	<style>
+		#tab {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#tab td, #tab th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#tab tr:nth-child(even){background-color: #f2f2f2;}
+
+#tab tr:hover {background-color: #ddd;}
+
+#tab th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+	</style>
+	<script src="{% static  'jquery-2.1.4.min.js' %}"></script>
+	<script>
+	$(document).ready(function(){
+	$.ajax({url:"/newsending/",
+            contentType: "application/json; charset=utf-8",
+            //data:{"d1":x},
+            datatype:"json",
+            success:function(da){
+			
+			for(var i=0;i<da.dt1.length;i++){
+				if(da.dt1[i].fields["filename"]!=""){
+				$('#tab').append('<tr><td><input type="text" size="3" value="'+da.dt1[i].pk+'" class="id"></td><td><input type="text" size="36" value="'+da.dt1[i].fields["filename"]+'" class="name"></td><td><button style="color:green;" class="appr">✓</button></td><td><button style="color:red;" class="dis">X</button></td></tr>')
+				}
+				
+			}
+			}
+			});
+		
+			
+		
+		$(document).on('click','.appr',function(){
+			var row=$(this).closest('tr');
+			var d=row.find('.id').val();
+			$.ajax({url:"/approvemsg/",
+            contentType: "application/json; charset=utf-8",
+            data:{"d1":d},
+            datatype:"json",
+            success:function(da){
+				alert("SUCCESS");
+				$('#tab').empty();
+				$('#tab').append('<tr><th>ID</th><th>FILE NAME</th><th>APPROVE</th><th></th></tr>')
+				for(var i=0;i<da.dt1.length;i++){
+				if(da.dt1[i].fields["filename"]!=""){
+				$('#tab').append('<tr><td><input type="text" size="3" value="'+da.dt1[i].pk+'" class="id"></td><td><input type="text" size="36" value="'+da.dt1[i].fields["filename"]+'" class="name"></td><td><button style="color:green;" class="appr">✓</button></td><td><button style="color:red;" class="dis">X</button></td></tr>')
+				}
+				}
+			}
+			});
+		});
+	
+		$(document).on('click','.dis',function(){
+			var row=$(this).closest('tr');
+			var d=row.find('.id').val();
+			$.ajax({url:"/discardmsg/",
+            contentType: "application/json; charset=utf-8",
+            data:{"d1":d},
+            datatype:"json",
+            success:function(da){
+				alert("SUCCESS");
+				$('#tab').empty();
+				$('#tab').append('<tr><th>ID</th><th>FILE NAME</th><th>APPROVE</th><th></th></tr>')
+				for(var i=0;i<da.dt1.length;i++){
+				if(da.dt1[i].fields["filename"]!=""){
+				$('#tab').append('<tr><td><input type="text" size="3" value="'+da.dt1[i].pk+'" class="id"></td><td><input type="text" size="36" value="'+da.dt1[i].fields["filename"]+'" class="name"></td><td><button style="color:green;" class="appr">✓</button></td><td><button style="color:red;" class="dis">X</button></td></tr>')
+				}
+				}
+			}
+			});
+		});
+	});
+	</script>
+	</head>
+	<body>
+		<!--[if lte IE 9]>
+		<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+		<![endif]-->
+		<!-- start body -->
+		<!-- preloader -->
+		<div class="spinner-section">
+			<div class="loader preloader"></div>
+		</div>
+		<!-- // end preloader -->
+		<!-- header -->
+		<header class="main-header offset-header">
+			<!-- header top -->
+			<div class="header-top whitecolor">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 col-lg-8">
+							<ul class="header-top-list">
+							</ul>
+						</div>
+						<div class="col-12 col-lg-4 text-right">
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- header bottom -->
+			<div class="header-bottom">
+				<div class="container">
+					<div class="row">
+						<!-- navbar -->
+						<nav class="navbar navbar-expand-lg w-100">
+							<!-- brand / logo -->
+							<a class="navbar-brand" href="#">
+								<img src="{% static 'assets/img/datashare.png' %}" alt="Wroot" width="100px" height="100px">
+							</a><label style="color:white;"></label>
+							<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+							</button>
+							<!-- nav menu -->
+							<div id="navbarNavDropdown" class="navbar-collapse collapse justify-content-end mainmenu">
+								<ul class="navbar-nav">
+									<li class="nav-item">
+										<a class="nav-link" href="{% url 'newadmin' %}">Home <span class="sr-only">(current)</span></a>
+									</li> 
+									</ul>
+							</div>
+							<!-- menu search -->
+							
+						</nav>
+						<!-- // end navbar -->
+					</div>
+				</div>
+			</div>
+		</header>
+		<!-- // end header -->
+		<!-- banner section -->
+		<section class="banner-section">
+			<div class="container">
+				<div class="row">
+					<div class="col-12 banner-content whitecolor">
+						<div class="banner-text">
+							<div class="flat-content">
+								
+								
+								
+								<div class="banner-button">
+									<!--<a href="#" class="main-btn">Sign In</a>
+									<a href="#" class="main-btn white-btn">Sign Up</a>
+									
+									======================================================
+									<th>DOB</th>
+									-->
+									<table id="tab">
+									<tr><th><center>ID</center></th><th><center>FILE NAME</center></th><th><center>✓</center></th><th><center>X</center></th></tr>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- footer section -->
+		<footer class="footer-section black-bg">
+			<!-- footer top -->
+			<!-- footer copyright -->
+			<div class="footer-copyright whitecolor">
+				<div class="container">
+					<div class="row">
+						<div class="w-100 d-md-flex d-block justify-content-between">
+							<p>Copyright &copy; 2018 <a href="#">TAFC</a> All Rights Reserved</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<!-- // end footer section -->
+		<!-- // end body -->
+		<!-- Scripts -->
+		<!-- modernizar script -->
+		<script src="{% static 'assets/js/vendor/modernizr-3.6.0.min.js' %}"></script>
+		<!-- jquery -->
+		<script src="{% static 'assets/js/vendor/jquery-3.3.1.min.js' %}"></script>
+		<!-- Bootstrap Core -->
+		<script src="{% static 'assets/js/popper.min.js' %}"></script>
+		<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+		<!-- owl carousel -->
+		<script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+		<!-- whypoints -->
+		<script src="{% static 'assets/js/jquery.waypoints.min.js' %}"></script>
+		<!-- type animation -->
+		<script src="{% static 'assets/js/type-animation.js' %}"></script>
+		<!-- circle progress -->
+		<script src="{% static 'assets/js/circle-progress.min.js' %}"></script>
+		<!-- masonary -->
+		<script src="{% static 'assets/js/masonary.min.js' %}"></script>
+		<!-- isotope -->
+		<script src="{% static 'assets/js/isotope.pkgd.min.js' %}"></script>
+		<!-- imagesLoaded -->
+		<script src="{% static 'assets/js/imagesloaded.pkgd.min.js' %}"></script>
+		<!-- wow js -->
+		<script src="{% static 'assets/js/wow.min.js' %}"></script>
+		<!-- main script -->
+		<script src="{% static 'assets/js/main.js' %}"></script>
+	</body>
+
+<!-- Mirrored from themes.crazyenter.com/static/wroot/templates/multi-page/simple/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 17 Jan 2019 07:11:48 GMT -->
+</html>

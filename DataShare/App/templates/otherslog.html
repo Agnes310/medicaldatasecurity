@@ -1,0 +1,178 @@
+{% load staticfiles %}
+<!doctype html>
+<html class="no-js" lang="">
+	
+<!-- Mirrored from themes.crazyenter.com/static/wroot/templates/multi-page/simple/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 17 Jan 2019 07:09:20 GMT -->
+<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>TAFC</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="manifest" href="site.html">
+		<!-- Place favicon.ico -->
+		<link rel="apple-touch-icon" href="{% static 'assets/img/datashare.png' %}">
+		<link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/img/icon.png' %}">
+		<!-- google fonts -->
+		<link href="https://fonts.googleapis.com/css?family=Nunito:400,700" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+		<!-- Stylesheet -->
+		<!-- normalize style -->
+		<link rel="stylesheet" href="{% static 'assets/css/normalize.css' %}">
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+		<!-- owl carousel -->
+		<link rel="stylesheet" href="{% static 'assets/css/owl.carousel.min.css' %}">
+		<!-- fontawesome -->
+		<link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+		<!-- animate css -->
+		<link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}">
+		<!-- type animation css -->
+		<link rel="stylesheet" href="{% static 'assets/css/typing-css.css' %}">
+		<!-- custom style -->
+		<link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+		<!-- main style -->
+		<link rel="stylesheet" href="{% static 'style.css' %}">
+		<!-- responsive css -->
+		<link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+	</head>
+	<body>
+	<style>
+	body{
+	background-image:url("{% static 'assets/img/t2.jpg' %}");
+	background-repeat:no-repeat;
+	width:100%;
+	height:100%;
+	background-size: cover;
+	}
+	</style>
+	<p id="uname" style="display:none;">{{zx}}</p>
+		<script>
+		alert('Welcome '+document.getElementById('uname').innerHTML+'[Data User]');
+		</script>
+		<div class="spinner-section">
+			<div class="loader preloader"></div>
+		</div>
+		<header class="main-header offset-header">
+			<div class="header-top whitecolor">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 col-lg-8">
+							<ul class="header-top-list">
+								<li><i class="fas fa-envelope"></i><span style="color:blue;"> {{email}}</span></li>
+							</ul>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<div class="header-bottom">
+				<div class="container">
+					<div class="row">
+						<nav class="navbar navbar-expand-lg w-100">
+							<a class="navbar-brand" href="#">
+								<img src="{% static 'assets/img/datashare.png' %}" width="150" height="100" alt="Wroot">
+							
+							<label style="color:white;"></label></a>
+							<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+							</button>
+							<!-- nav menu -->
+							<div id="navbarNavDropdown" class="navbar-collapse collapse justify-content-end mainmenu">
+								<ul class="navbar-nav">
+									<li class="nav-item">
+										<a class="nav-link" href="index.html"><label style="color:blue;">Home</label> <span class="sr-only">(current)</span></a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{% url 'cloudpage' %}"><label style="color:blue;">Cloud Services</label></a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{% url 'log' %}"><label style="color:blue;">LogOut({{zx}})</label></a>
+									</li>
+									
+									
+									
+									
+								</ul>
+							</div>
+							
+							
+						</nav>
+						<!-- // end navbar -->
+					</div>
+				</div>
+			</div>
+		</header>
+		<!-- // end header -->
+		<!-- banner section -->
+		<section>
+			<div class="container">
+				<div class="row">
+					<div class="col-12 banner-content whitecolor">
+						<div class="banner-text">
+							<div class="flat-content"><br><br>
+							
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<div class="best-client-section small-space grey-bg">
+			<div class="container">
+				<div class="row">
+					<div class="col-12">
+						<!-- best client list -->
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="footer-section black-bg">
+			<!-- footer top -->
+			
+			<!-- footer copyright -->
+			<div class="footer-copyright whitecolor">
+				<div class="container">
+					<div class="row">
+						<div class="w-100 d-md-flex d-block justify-content-between">
+							<p>Copyright &copy; 2018 <a href="#">Wroot</a> All Rights Reserved</p>
+							<p>Build With <i class="fas fa-heart"></i> By <a href="https://crazyenter.com/" target="_blank">crazyEnter</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<!-- // end footer section -->
+		<!-- // end body -->
+		<!-- Scripts -->
+		<!-- modernizar script -->
+		<script src="{% static 'assets/js/vendor/modernizr-3.6.0.min.js' %}"></script>
+		<!-- jquery -->
+		<script src="{% static 'assets/js/vendor/jquery-3.3.1.min.js' %}"></script>
+		<!-- Bootstrap Core -->
+		<script src="{% static 'assets/js/popper.min.js' %}"></script>
+		<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+		<!-- owl carousel -->
+		<script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+		<!-- whypoints -->
+		<script src="{% static 'assets/js/jquery.waypoints.min.js' %}"></script>
+		<!-- type animation -->
+		<script src="{% static 'assets/js/type-animation.js' %}"></script>
+		<!-- circle progress -->
+		<script src="{% static 'assets/js/circle-progress.min.js' %}"></script>
+		<!-- masonary -->
+		<script src="{% static 'assets/js/masonary.min.js' %}"></script>
+		<!-- isotope -->
+		<script src="{% static 'assets/js/isotope.pkgd.min.js' %}"></script>
+		<!-- imagesLoaded -->
+		<script src="{% static 'assets/js/imagesloaded.pkgd.min.js' %}"></script>
+		<!-- wow js -->
+		<script src="{% static 'assets/js/wow.min.js' %}"></script>
+		<!-- main script -->
+		<script src="{% static 'assets/js/main.js' %}"></script>
+	</body>
+
+<!-- Mirrored from themes.crazyenter.com/static/wroot/templates/multi-page/simple/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 17 Jan 2019 07:11:48 GMT -->
+</html>
